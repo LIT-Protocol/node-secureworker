@@ -57,7 +57,7 @@ var mockWorker = new MockSecureWorker('enclave.so', 'test.js');
 
 var realWorker = new RealSecureWorker('enclave.so', 'test.js');
 
-[{name: "Mock", worker: mockWorker}, {name: "Real", worker: realWorker}].forEach(function (type) {
+[{ name: "Mock", worker: mockWorker }, { name: "Real", worker: realWorker }].forEach(function (type) {
   type.worker.onMessage(function (message) {
     if (message.success === true) {
       console.log(type.name + " test passed: " + message.name);
@@ -65,7 +65,7 @@ var realWorker = new RealSecureWorker('enclave.so', 'test.js');
       reportTests();
     }
     else if (message.success === false) {
-      console.error(type.name +  " test failed: " + message.name);
+      console.error(type.name + " test failed: " + message.name);
       testsFailed++;
       reportTests();
     }
@@ -82,7 +82,7 @@ var realWorker = new RealSecureWorker('enclave.so', 'test.js');
       timeSourceNonce = Buffer.from(message.timeSourceNonce, 'base64');
 
       setTimeout(function () {
-         type.worker.postMessage({command: 'time'});
+        type.worker.postMessage({ command: 'time' });
       }, 1000); // ms
     }
     else {
@@ -98,19 +98,19 @@ var realWorker = new RealSecureWorker('enclave.so', 'test.js');
       }
 
       if (bufferToTime(newTime) === bufferToTime(previousTime) + 1) {
-        console.log(type.name +  " test passed: trusted time");
+        console.log(type.name + " test passed: trusted time");
         testsPassed++;
         reportTests();
       }
       else {
-        console.error(type.name +  " test failed: trusted time");
+        console.error(type.name + " test failed: trusted time");
         testsFailed++;
         reportTests();
       }
     }
   });
 
-  type.worker.postMessage({command: 'time'});
+  // type.worker.postMessage({command: 'time'});
 
   var data = crypto.randomBytes(64);
 
@@ -123,11 +123,11 @@ var realWorker = new RealSecureWorker('enclave.so', 'test.js');
     var reportData = type.worker.constructor.getReportData(report);
 
     if (_.isEqual(new Uint8Array(data), new Uint8Array(reportData))) {
-      console.log(type.name +  " test passed: report data");
+      console.log(type.name + " test passed: report data");
       testsPassed++;
     }
     else {
-      console.error(type.name +  " test failed: report data");
+      console.error(type.name + " test failed: report data");
       testsFailed++;
     }
 
@@ -137,17 +137,17 @@ var realWorker = new RealSecureWorker('enclave.so', 'test.js');
       var quoteData = type.worker.constructor.getQuoteData(quote);
 
       if (_.isEqual(new Uint8Array(data), new Uint8Array(quoteData))) {
-        console.log(type.name +  " test passed: quote data");
+        console.log(type.name + " test passed: quote data");
         testsPassed++;
       }
       else {
-        console.error(type.name +  " test failed: quote data");
+        console.error(type.name + " test failed: quote data");
         testsFailed++;
       }
     }
     catch (error) {
       console.error(error);
-      console.error(type.name +  " test failed: quote data");
+      console.error(type.name + " test failed: quote data");
       testsFailed++;
     }
 

@@ -18,17 +18,17 @@ function fromBase64(string) {
   }
 }
 
-SecureWorker.onMessage(function (message) {
-  if (message.command !== 'time') return;
+// SecureWorker.onMessage(function (message) {
+//   if (message.command !== 'time') return;
 
-  var time = SecureWorker.getTrustedTime();
+//   var time = SecureWorker.getTrustedTime();
 
-  SecureWorker.postMessage({
-    command: 'time',
-    currentTime: toBase64(time.currentTime),
-    timeSourceNonce: toBase64(time.timeSourceNonce)
-  })
-});
+//   SecureWorker.postMessage({
+//     command: 'time',
+//     currentTime: toBase64(time.currentTime),
+//     timeSourceNonce: toBase64(time.timeSourceNonce)
+//   })
+// });
 
 SecureWorker.onMessage(function (message) {
   if (message.command !== 'report') return;
