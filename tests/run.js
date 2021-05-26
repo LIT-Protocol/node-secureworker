@@ -114,50 +114,50 @@ var realWorker = new RealSecureWorker('enclave.so', 'test.js');
 
   var data = crypto.randomBytes(64);
 
-  type.worker.onMessage(function listener(message) {
-    if (message.command !== 'report') return;
-    type.worker.removeOnMessage(listener);
+  // type.worker.onMessage(function listener(message) {
+  //   if (message.command !== 'report') return;
+  //   type.worker.removeOnMessage(listener);
 
-    var report = new Uint8Array(Buffer.from(message.report, 'base64').values()).buffer;
+  //   var report = new Uint8Array(Buffer.from(message.report, 'base64').values()).buffer;
 
-    var reportData = type.worker.constructor.getReportData(report);
+  //   var reportData = type.worker.constructor.getReportData(report);
 
-    if (_.isEqual(new Uint8Array(data), new Uint8Array(reportData))) {
-      console.log(type.name + " test passed: report data");
-      testsPassed++;
-    }
-    else {
-      console.error(type.name + " test failed: report data");
-      testsFailed++;
-    }
+  //   if (_.isEqual(new Uint8Array(data), new Uint8Array(reportData))) {
+  //     console.log(type.name + " test passed: report data");
+  //     testsPassed++;
+  //   }
+  //   else {
+  //     console.error(type.name + " test failed: report data");
+  //     testsFailed++;
+  //   }
 
-    try {
-      var quote = type.worker.constructor.getQuote(report, false, new ArrayBuffer(16));
+  //   try {
+  //     var quote = type.worker.constructor.getQuote(report, false, new ArrayBuffer(16));
 
-      var quoteData = type.worker.constructor.getQuoteData(quote);
+  //     var quoteData = type.worker.constructor.getQuoteData(quote);
 
-      if (_.isEqual(new Uint8Array(data), new Uint8Array(quoteData))) {
-        console.log(type.name + " test passed: quote data");
-        testsPassed++;
-      }
-      else {
-        console.error(type.name + " test failed: quote data");
-        testsFailed++;
-      }
-    }
-    catch (error) {
-      console.error(error);
-      console.error(type.name + " test failed: quote data");
-      testsFailed++;
-    }
+  //     if (_.isEqual(new Uint8Array(data), new Uint8Array(quoteData))) {
+  //       console.log(type.name + " test passed: quote data");
+  //       testsPassed++;
+  //     }
+  //     else {
+  //       console.error(type.name + " test failed: quote data");
+  //       testsFailed++;
+  //     }
+  //   }
+  //   catch (error) {
+  //     console.error(error);
+  //     console.error(type.name + " test failed: quote data");
+  //     testsFailed++;
+  //   }
 
-    reportTests();
-  });
+  //   reportTests();
+  // });
 
-  type.worker.postMessage({
-    command: 'report',
-    reportData: data.toString('base64')
-  });
+  // type.worker.postMessage({
+  //   command: 'report',
+  //   reportData: data.toString('base64')
+  // });
 });
 
 // TODO: Test remote attestation and validation of remote attestation.

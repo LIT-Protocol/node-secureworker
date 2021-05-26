@@ -5,7 +5,9 @@
             "includePath": [
                 "/opt/intel/sgxsdk/include",
                 "/home/azureuser/node-secureworker/duktape-1.4.0/src-separate",
-                "/home/azureuser/node-secureworker/scripts"
+                "/home/azureuser/node-secureworker/scripts",
+                "/home/azureuser/node-secureworker/duk_enclave",
+                "/home/azureuser/node-secureworker/node_modules/nan"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang-8",

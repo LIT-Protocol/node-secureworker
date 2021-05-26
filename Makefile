@@ -1,8 +1,8 @@
 ######## SGX SDK Settings ########
 
 SGX_SDK ?= /opt/intel/sgxsdk
-SGX_DEBUG ?= 1
-SGX_MODE ?= SIM
+SGX_DEBUG ?= 0
+SGX_MODE ?= HW
 SGX_ARCH ?= x64
 
 ifeq ($(shell getconf LONG_BIT), 32)
@@ -73,7 +73,7 @@ ifneq ($(SGX_MODE), HW)
 else
 	Trts_Library_Name := sgx_trts
 	Service_Library_Name := sgx_tservice
-	Crypto_Library_Name := sgx_tcrypto_opt
+	Crypto_Library_Name := sgx_tcrypto
 endif
 
 Enclave_Include_Paths := -I$(SGX_SDK)/include -I$(SGX_SDK)/include/tlibc -I$(SGX_SDK)/include/stdc++
@@ -136,6 +136,7 @@ build/Release/secureworker_internal.node: export SGX_SDK := $(SGX_SDK)
 build/Release/secureworker_internal.node: export SGX_LIBRARY_PATH := $(SGX_LIBRARY_PATH)
 build/Release/secureworker_internal.node: export SGX_URTS_LIBRARY_NAME := $(Urts_Library_Name)
 build/Release/secureworker_internal.node: export SGX_SERVICE_LIBRARY_NAME := $(Service_Library_Name)
+# build/Release/secureworker_internal.node: export SGX_UAE_SERVICE_LIBRARY_NAME := $(Uae_Service_Library_Name) # this is my attempt at fixing epid / quoting
 build/Release/secureworker_internal.node: node-secureworker-internal/secureworker-internal.cc duk_enclave/duk_enclave_u.h duk_enclave/duk_enclave_u.o | build
 	node-gyp rebuild
 
@@ -213,6 +214,12 @@ ${ENCLAVE_CONFIG}:
 	echo "$$DEFAULT_ENCLAVE_CONFIG" > $@
 
 enclave: node Makefile build ${ENCLAVE_OUTPUT}
+
+clean:
+	rm -f tests/*.so 
+	rm -f scripts/*.o
+	rm -f duk_enclave/*.o
+	rm -rf build
 
 .PHONY: all build always-rebuild
 .SECONDARY: duk_enclave/duk_enclave_t.c duk_enclave/duk_enclave_t.h duk_enclave/duk_enclave_u.c duk_enclave/duk_enclave_u.h
