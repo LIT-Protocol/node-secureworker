@@ -26,9 +26,10 @@ function getSealedPrivateKey() {
 
 function getPublicKey(sealedPrivateKey) {
   console.log('getPublicKey')
-  const privateKey = SecureWorker.unsealData(sealedPrivateKey)
+  const privateKey = SecureWorker.unsealData(fromBase64(sealedPrivateKey))
+  console.log('unsealed')
 
-
+  return 0
 }
 
 SecureWorker.onMessage(function (message) {
@@ -45,7 +46,8 @@ SecureWorker.onMessage(function (message) {
       })
       break;
     case 'getPublicKey':
-      const publicKey = getPublicKey(sealedPrivateKey)
+      const publicKey = getPublicKey(message.sealedPrivateKey)
+      break;
     default:
       console.log('unknown command in enclave: ' + message.command)
   }

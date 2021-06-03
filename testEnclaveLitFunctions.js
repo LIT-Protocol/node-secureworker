@@ -27,6 +27,7 @@ worker.postMessage({
 function getPublicKey() {
   worker.postMessage({
     command: 'getPublicKey',
-    ts: new Date().getTime()
+    ts: new Date().getTime(),
+    sealedPrivateKey
   })
 }

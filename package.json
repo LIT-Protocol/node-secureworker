@@ -42,5 +42,6 @@
   "bugs": {
     "url": "https://github.com/evervault/node-secureworker/issues"
   },
-  "homepage": "https://github.com/evervault/node-secureworker"
+  "homepage": "https://github.com/evervault/node-secureworker",
+  "devDependencies": {}
 }
